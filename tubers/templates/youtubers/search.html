@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="searchpage">
+    <div class="banner">
+        <img src="{% static './assets/images/bg-banner.png' %}" alt="" class="img-fluid w-100">
+        <h1 class="text-center">
+            Search Result
+        </h1>
+    </div>
+
+    <section class="searchbox container mt-5 p-3 bg-accent">
+        <form method="GET" action="{% url 'search' %}">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <select name="city" id="inputState" class="form-control">
+                        <option selected disabled hidden>City</option>
+                        {% for city in cities %}
+                        <option value="{{city}}">{{city}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <select name="camera_type" id="inputState" class="form-control">
+                        <option selected disabled hidden>Camera Type</option>
+                        {% for camera_type in camera_types %}
+                        <option value="{{camera_type}}">{{camera_type}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <select name="category" class="form-control">
+                        <option selected disabled hidden>Category</option>
+                        {% for category in categories %}
+                        <option value="{{category}}">{{category}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <select name="crew" class="form-control">
+                        <option selected disabled hidden>Crew</option>
+                        {% for crew in crews %}
+                        <option value="{{crew}}">{{crew}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-light">Search</button>
+            </div>
+
+        </form>
+
+    </section>
+
+
+
+    <section class="search-results container mt-3 grid">
+
+
+
+        {% for youtuber in youtubers %}
+        <!-- person 1 -->
+        <div class="card border-0 text-center">
+            <div>
+                <a href="{% url 'youtubers_detail' youtuber.id %}">
+                    <img src="{{youtuber.photo.url}}" class="card-img-top" alt="team-member">
+                </a>
+
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{youtuber.name}}</h5>
+                <p class="card-text">{{youtuber.category}}</p>
+                <div class="person-description mt-2">
+                    <button class="btn btn-accent">City: {{youtuber.city}}</button>
+                    <button class="btn btn-accent">Age: {{youtuber.age}}</button>
+                    <button class="btn btn-accent">Height: {{youtuber.height}}</button>
+                </div>
+                <div class="person-description mt-2">
+                    <button class="btn btn-accent">Crew: {{youtuber.crew}}</button>
+                    <button class="btn btn-accent">Camera: {{youtuber.camera_type}}</button>
+                    <button class="btn btn-accent">Subs: {{youtuber.subs_count}}</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+    </section>
+</main>
+
+{% endblock %}

@@ -10,7 +10,8 @@ def home(request):
     featured_youtubers = Youtuber.objects.order_by(
         '-created_date').filter(is_featured=True)
 
-    all_youtubers = Youtuber.objects.order_by('-created_date')
+    all_youtubers = Youtuber.objects.order_by(
+        '-created_date')[:6]  # [:6] -> trimming list to first 6
 
     data = {
         'sliders': sliders, 'teams': teams,

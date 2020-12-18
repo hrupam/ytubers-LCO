@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'webpages.apps.WebpagesConfig',
     'youtubers.apps.YoutubersConfig',
+    'accounts.apps.AccountsConfig',
     'djangocms_admin_style',
     'django.contrib.admin',
     'django.contrib.auth',

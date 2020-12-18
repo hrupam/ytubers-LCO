@@ -1,6 +1,8 @@
+from django.contrib.auth import login
 from django.shortcuts import get_object_or_404, render
 from .models import Youtuber
 from itertools import chain
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -49,7 +51,9 @@ def search(request):
         if keyword:
             yt_name_search = youtubers.filter(name__icontains=keyword)
             yt_desc_search = youtubers.filter(description__icontains=keyword)
-            youtubers = list(chain(yt_name_search, yt_desc_search))
+            yt_camera_search = youtubers.filter(camera_type__icontains=keyword)
+            youtubers = list(
+                chain(yt_name_search, yt_desc_search, yt_camera_search))
 
     if 'city' in request.GET:
         city = request.GET['city']

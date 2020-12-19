@@ -21,12 +21,12 @@ def login_user(request):
         else:
             auth.login(request, user)
             messages.success(request, 'You are successfully logged in')
-            # return redirect('home')
+            return redirect('home')
 
     if not request.user.is_authenticated:
         return render(request, 'accounts/login.html')
     else:
-        return redirect('dashboard')
+        return redirect('home')
 
 
 def logout_user(request):
@@ -64,7 +64,7 @@ def register(request):
     return render(request, 'accounts/register.html')
 
 
-@login_required(redirect_field_name='dashboard', login_url='login')
+@login_required(login_url='login')
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
 

@@ -1,5 +1,6 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
+from datetime import datetime
 # Create your models here.
 
 
@@ -28,3 +29,12 @@ class Team(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+class About(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    description = RichTextField()
+    created_date = models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return self.title

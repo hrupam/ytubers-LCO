@@ -1,12 +1,16 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Slider, Team
+from .models import Slider, Team, About
 
 # Register your models here.
 
 
 class SliderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'headline', 'created_date']
+
+    def slider_image(self, object):
+        return format_html('<img src="{}" width="100"/>'.format(object.photo.url))
+
+    list_display = ['headline', 'slider_image', 'button_text']
     list_display_links = ['headline']
 
 
@@ -25,5 +29,10 @@ class TeamAdmin(admin.ModelAdmin):
     list_filter = ['role']
 
 
+class AboutAdmin(admin.ModelAdmin):
+    list_display = ['title', 'created_date']
+
+
 admin.site.register(Slider, SliderAdmin)
 admin.site.register(Team, TeamAdmin)
+admin.site.register(About, AboutAdmin)

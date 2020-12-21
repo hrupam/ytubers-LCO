@@ -1,4 +1,10 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- {% include 'messages.html' %} -->
+
 
 <main class="home">
     <!-- Sliders -->
@@ -46,10 +52,12 @@
             {% for fy in featured_youtubers %}
             <!-- person -->
             <div class="card border-0 text-center ml-3 mr-3">
-                <div class="feature-text">
-                    <img src="{{fy.photo.url}}" class="card-img-top" alt="team-member" />
-                    <span class="text-left bg-accent font-weight-bold"> Featured </span>
-                </div>
+                <a href="{% url 'youtubers_detail' fy.id %}">
+                    <div class="feature-text">
+                        <img src="{{fy.photo.url}}" class="card-img-top" alt="team-member" />
+                        <span class="text-left bg-accent font-weight-bold"> Featured </span>
+                    </div>
+                </a>
                 <div class="card-body">
                     <h4 class="card-title">{{fy.name}}</h4>
                     <p class="card-text">{{fy.category}}</p>
@@ -90,7 +98,8 @@
             <!-- person 1 -->
             <div class="card border-0 text-center">
                 <div>
-                    <img src="{{youtuber.photo.url}}" class="card-img-top" alt="team-member" />
+                    <a href="{% url 'youtubers_detail' youtuber.id %}"><img src="{{youtuber.photo.url}}"
+                            class="card-img-top" alt="team-member" /></a>
                 </div>
                 <div class="card-body">
                     <h3 class="card-title">{{youtuber.name}}</h3>

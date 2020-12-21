@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<!-- {% include 'messages.html' %} -->
+
 <main class="contact-us">
     <div class="banner">
         <img src="{% static './assets/images/bg-banner.png' %}" alt="" class="img-fluid w-100">
@@ -16,10 +18,21 @@
         <h4 class="text-center text-white-50">
             Hi, {{user.first_name}}. Hope you are having a good day
         </h4>
+        {% if not tubers_hired %}
+        <h5 class="text-center text-white-50">
+            No youtubers hired
+        </h5>
+        {% else %}
+        <h5 class="text-center text-white-50">
+            Here are the list of youtubers you have hired
+        </h5>
+        {% endif %}
 
-        <div class="table-responsive- mt-3">
 
-            <table class="table table-striped">
+        {% if tubers_hired %}
+        <div class="table-responsive mt-4">
+
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -29,33 +42,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for tb in tubers_hired %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
+                        <th scope="row">{{tb.id}}</th>
+                        <td>{{tb.name}}</td>
+                        <td>{{tb.city}}</td>
                         <td>
-                            <div class="btn btn-accent">Go to Page </div>
+                            <a href="{% url 'youtubers_detail' tb.id %}" class="btn btn-accent">Go to Tuber's Page </a>
                         </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>
-                            <div class="btn btn-accent">Go to Page </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>
-                            <div class="btn btn-accent">Go to Page </div>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
+        {% endif %}
 
     </section>
 </main>

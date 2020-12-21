@@ -1,7 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
+
+from hiretubers.models import Hiretuber
+from youtubers.models import Youtuber
 
 # Create your views here.
 
@@ -15,22 +18,23 @@ def login_user(request):
         user = auth.authenticate(username=username, password=password)
 
         if user is None:
-            messages.error(request, 'Invalid credentials')
+            messages.warning(request, 'Invalid credentials')
             return redirect('login')
 
         else:
             auth.login(request, user)
             messages.success(request, 'You are successfully logged in')
-            return redirect('home')
+            return redirect('dashboard')
 
     if not request.user.is_authenticated:
         return render(request, 'accounts/login.html')
     else:
-        return redirect('home')
+        return redirect('dashboard')
 
 
 def logout_user(request):
     auth.logout(request)
+    messages.success(request, 'You are logged out')
     return redirect('home')
 
 
@@ -45,10 +49,10 @@ def register(request):
 
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exixts')
+                messages.warning(request, 'Username already exixts')
                 return redirect('register')
             elif User.objects.filter(email=email).exists():
-                messages.error(request, 'Email already exixts')
+                messages.warning(request, 'Email already exixts')
                 return redirect('register')
             else:
                 user = User.objects.create_user(
@@ -58,7 +62,7 @@ def register(request):
                 auth.login(request, user)
                 return redirect('dashboard')
         else:
-            messages.error(request, 'Password does not match')
+            messages.warning(request, 'Password does not match')
             return redirect('register')
 
     return render(request, 'accounts/register.html')
@@ -66,7 +70,22 @@ def register(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+
+    hired = Hiretuber.objects.filter(
+        user_id=request.user.id).order_by('-created_date')
+    tuber_ids = hired.values_list('tuber_id', flat=True).distinct()
+
+    tubers_hired = []
+    for id in tuber_ids:
+        tuber = get_object_or_404(Youtuber, pk=id)
+        tubers_hired.append(tuber)
+
+    data = {
+        'tubers_hired': tubers_hired,
+    }
+    print(tubers_hired)
+
+    return render(request, 'accounts/dashboard.html', data)
 
 
 @login_required(login_url='login')
